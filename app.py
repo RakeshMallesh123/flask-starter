@@ -5,11 +5,28 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from marshmallow import ValidationError
-from flask_sendgrid import SendGrid
+from celery import Celery
 
 from db import db
 from ma import ma
 from resources.v1.user import UserRegister, UserLogin, User, UserLogout, TokenRefresh
+
+
+def make_celery(app):
+    celery = Celery(
+        app.import_name,
+        backend=app.config['CELERY_RESULT_BACKEND'],
+        broker=app.config['CELERY_BROKER_URL']
+    )
+    celery.conf.update(app.config)
+
+    class ContextTask(celery.Task):
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return self.run(*args, **kwargs)
+
+    celery.Task = ContextTask
+    return celery
 
 
 app = Flask(__name__)
@@ -18,7 +35,7 @@ app.config.from_envvar("APPLICATION_SETTINGS")
 api = Api(app)
 jwt = JWTManager(app)
 migrate = Migrate(app, db)
-mail = SendGrid(app)
+celery = make_celery(app)
 
 
 # @app.before_first_request
