@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a725325a01521ba3f415933520437c1aae9296bb0a2793b783699db551248ca1"
+            "sha256": "f0c0d98230ca30bc8126532fa6f5610305e4e97341959f7433d9308995a4717a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -74,6 +74,15 @@
             ],
             "index": "pypi",
             "version": "==0.3.7"
+        },
+        "flask-sendgrid": {
+            "hashes": [
+                "sha256:7f81ecad0cbbdd28d8750e1db43bb683ea18a16b4f96af82fdb2857d9a402020",
+                "sha256:be081d350fca7433655aa8e6b789000a0f673b7bfda8cb72eea20bb55e09051f",
+                "sha256:d6892fa41cc038cbab41bab12e9cce3cddbfe504362ca527f5823dabb2bfa8d4"
+            ],
+            "index": "pypi",
+            "version": "==0.7.1"
         },
         "flask-sqlalchemy": {
             "hashes": [
@@ -199,12 +208,25 @@
             ],
             "version": "==1.0.4"
         },
+        "python-http-client": {
+            "hashes": [
+                "sha256:7e430f4b9dd2b621b0051f6a362f103447ea8e267594c602a5c502a0c694ee38"
+            ],
+            "version": "==3.1.0"
+        },
         "pytz": {
             "hashes": [
                 "sha256:303879e36b721603cc54604edcac9d20401bdbe31e1e4fdee5b9f98d5d31dfda",
                 "sha256:d747dd3d23d77ef44c6a3526e274af6efeb0a6f1afd5a69ba4d5be4098c8e141"
             ],
             "version": "==2019.1"
+        },
+        "sendgrid": {
+            "hashes": [
+                "sha256:297d33363a70df9b39419210e1273b165d487730e85c495695e0015bc626db71",
+                "sha256:8b82c8c801dde8180a567913a9f80d8a63f38e39f209edde302b6df899b4bca1"
+            ],
+            "version": "==6.0.5"
         },
         "six": {
             "hashes": [

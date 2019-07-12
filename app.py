@@ -5,6 +5,7 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from marshmallow import ValidationError
+from flask_sendgrid import SendGrid
 
 from db import db
 from ma import ma
@@ -12,19 +13,17 @@ from resources.v1.user import UserRegister, UserLogin, User, UserLogout, TokenRe
 
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["PROPAGATE_EXCEPTIONS"] = True
-app.secret_key = os.environ.get("SECRET_KEY")
+app.config.from_object("default_config")
+app.config.from_envvar("APPLICATION_SETTINGS")
 api = Api(app)
 jwt = JWTManager(app)
 migrate = Migrate(app, db)
+mail = SendGrid(app)
 
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
+# @app.before_first_request
+# def create_tables():
+#     db.create_all()
 
 
 @app.errorhandler(ValidationError)
