@@ -1,6 +1,7 @@
 from db import db
 import datetime
 from sqlalchemy.sql import func
+from werkzeug.security import generate_password_hash
 
 
 class UserModel(db.Model):
@@ -18,11 +19,15 @@ class UserModel(db.Model):
 
     @classmethod
     def find_by_email(cls, email: str) -> "UserModel":
-        return cls.query.filter_by(email=email).first()
+        return cls.query.filter_by(email=email, deleted_at=None).first()
 
     @classmethod
     def find_by_id(cls, _id: int) -> "UserModel":
         return cls.query.filter_by(id=_id).first()
+
+    @classmethod
+    def encrypt_password(cls, password):
+        return generate_password_hash(password, method='sha256')
 
     def save_to_db(self) -> None:
         db.session.add(self)
