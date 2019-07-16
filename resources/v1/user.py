@@ -1,6 +1,11 @@
+import os
+from sendgrid import SendGridAPIClient
+from flask import render_template
+from sendgrid.helpers.mail import Mail
+
 from flask_restful import Resource
 from flask import request
-from werkzeug.security import safe_str_cmp
+from werkzeug.security import check_password_hash
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -13,6 +18,8 @@ from libs.strings import gettext
 from models.user import UserModel
 from schemas.user import UserSchema, LoginSchema
 from blacklist import BLACKLIST
+from libs.email import welcome
+
 
 user_schema = UserSchema()
 login_schema = LoginSchema()
@@ -26,7 +33,7 @@ class UserRegister(Resource):
 
         if UserModel.find_by_email(user.email):
             return {"message": gettext("user_email_exists")}, 400
-
+        user.password = UserModel.encrypt_password(user.password)
         user.save_to_db()
 
         return {"message": gettext("user_registered")}, 201
@@ -64,9 +71,10 @@ class UserLogin(Resource):
 
         user = UserModel.find_by_email(user_data.email)
 
-        if user and safe_str_cmp(user.password, user_data.password):
+        if user and check_password_hash(user.password, user_data.password):
             access_token = create_access_token(identity=user.id, fresh=True)
             refresh_token = create_refresh_token(user.id)
+            welcome(user.email)
             return {"access_token": access_token, "refresh_token": refresh_token}, 200
 
         return {"message": gettext("user_invalid_credentials")}, 401
