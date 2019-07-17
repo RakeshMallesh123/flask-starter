@@ -1,8 +1,3 @@
-import os
-from sendgrid import SendGridAPIClient
-from flask import render_template
-from sendgrid.helpers.mail import Mail
-
 from flask_restful import Resource
 from flask import request
 from werkzeug.security import check_password_hash

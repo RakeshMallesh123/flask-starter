@@ -1,10 +1,12 @@
 from db import db
-import datetime
+
 from sqlalchemy.sql import func
 from werkzeug.security import generate_password_hash
 
+from models.base_model import BaseModel
 
-class UserModel(db.Model):
+
+class UserModel(db.Model, BaseModel):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -28,12 +30,3 @@ class UserModel(db.Model):
     @classmethod
     def encrypt_password(cls, password):
         return generate_password_hash(password, method='sha256')
-
-    def save_to_db(self) -> None:
-        db.session.add(self)
-        db.session.commit()
-
-    def delete_from_db(self) -> None:
-        self.deleted_at = datetime.datetime.now()
-        db.session.add(self)
-        db.session.commit()

@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 "psycopg2" = "*"
 Flask = "*"
+Flask-Admin = "*"
+Flask-Login = "*"
 Flask-JWT-Extended = "*"
 Flask-RESTful = "*"
 Flask-SQLAlchemy = "*"
