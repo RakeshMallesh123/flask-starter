@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
@@ -34,7 +35,6 @@ def make_celery(app):
 
 
 app = Flask(__name__)
-app.config.from_object("default_config")
 app.config.from_envvar("APPLICATION_SETTINGS")
 api = Api(app)
 jwt = JWTManager(app)
