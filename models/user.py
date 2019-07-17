@@ -4,7 +4,25 @@ from sqlalchemy.sql import func
 from werkzeug.security import generate_password_hash
 
 
-class UserModel(db.Model):
+class BaseModel:
+    def __str__(self):
+        return str(self.id)
+
+    def __repr__(self):
+        return str(self.id)
+
+    def save_to_db(self) -> None:
+        db.session.add(self)
+        db.session.commit()
+
+    # Soft delete
+    def delete_from_db(self) -> None:
+        self.deleted_at = datetime.datetime.now()
+        db.session.add(self)
+        db.session.commit()
+
+
+class UserModel(db.Model, BaseModel):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -28,12 +46,3 @@ class UserModel(db.Model):
     @classmethod
     def encrypt_password(cls, password):
         return generate_password_hash(password, method='sha256')
-
-    def save_to_db(self) -> None:
-        db.session.add(self)
-        db.session.commit()
-
-    def delete_from_db(self) -> None:
-        self.deleted_at = datetime.datetime.now()
-        db.session.add(self)
-        db.session.commit()
