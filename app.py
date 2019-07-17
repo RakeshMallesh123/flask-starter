@@ -4,12 +4,14 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
+from flask_admin import Admin
 from marshmallow import ValidationError
 from celery import Celery
 
 from db import db
 from ma import ma
 from resources.v1.user import UserRegister, UserLogin, User, UserLogout, TokenRefresh
+from models.user import UserModel
 
 
 def make_celery(app):
@@ -60,4 +62,10 @@ api.add_resource(TokenRefresh, api_v1+"/refresh")
 if __name__ == "__main__":
     db.init_app(app)
     ma.init_app(app)
+
+    from admin.views import MyAdminIndexView, UserModelView
+
+    admin = Admin(app, name='Admin', template_mode='bootstrap3', index_view=MyAdminIndexView())
+    admin.add_view(UserModelView(UserModel, db.session, 'User'))
+
     app.run(port=5001, debug=True)
