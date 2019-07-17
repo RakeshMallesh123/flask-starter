@@ -1,25 +1,9 @@
 from db import db
-import datetime
+
 from sqlalchemy.sql import func
 from werkzeug.security import generate_password_hash
 
-
-class BaseModel:
-    def __str__(self):
-        return str(self.id)
-
-    def __repr__(self):
-        return str(self.id)
-
-    def save_to_db(self) -> None:
-        db.session.add(self)
-        db.session.commit()
-
-    # Soft delete
-    def delete_from_db(self) -> None:
-        self.deleted_at = datetime.datetime.now()
-        db.session.add(self)
-        db.session.commit()
+from models.base_model import BaseModel
 
 
 class UserModel(db.Model, BaseModel):
