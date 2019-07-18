@@ -60,7 +60,8 @@ if __name__ == "__main__":
     db.init_app(app)
     ma.init_app(app)
 
-    from admin.views import MyAdminIndexView, UserModelView, LogoutMenuLink
+    from admin.views import MyAdminIndexView, LogoutMenuLink
+    from admin.user import UserModelView
 
     # Admin View Start
     admin = Admin(app, name="Admin", template_mode="bootstrap3", index_view=MyAdminIndexView())
