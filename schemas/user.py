@@ -9,6 +9,8 @@ class UserSchema(ma.ModelSchema):
         load_only = ("password",)
         dump_only = ("id",)
 
+    email = fields.Email()
+
 
 class LoginSchema(UserSchema):
     username = fields.Str(required=False)
