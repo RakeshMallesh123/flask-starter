@@ -1,4 +1,3 @@
-import os
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
@@ -38,6 +37,7 @@ app = Flask(__name__)
 app.config.from_envvar("APPLICATION_SETTINGS")
 api = Api(app)
 jwt = JWTManager(app)
+db.init_app(app)
 migrate = Migrate(app, db)
 celery = make_celery(app)
 
@@ -45,6 +45,16 @@ celery = make_celery(app)
 @app.errorhandler(ValidationError)
 def handle_marshmallow_validation(err):
     return jsonify(err.messages), 400
+
+
+# Shell Commands Start
+@app.shell_context_processor
+def inject_models():
+    return {
+        'UserModel': UserModel,
+        'AccountModel': AccountModel
+    }
+# Shell Commands End
 
 
 # API V1 Start
