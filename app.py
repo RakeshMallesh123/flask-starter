@@ -67,7 +67,6 @@ api.add_resource(TokenRefresh, api_v1+"/refresh")
 # API V1 End
 
 if __name__ == "__main__":
-    db.init_app(app)
     ma.init_app(app)
 
     from admin.views import MyAdminIndexView, LogoutMenuLink
