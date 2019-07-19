@@ -19,6 +19,8 @@ Command to run Background job
 
     celery -A app.celery worker -l info -c 5 -E
 
+*Shell*
+- With flask shell we can use all models and also do ORM related operations with it
 
 *Admin*
 - Handle admin account in with table (Password encryption can be kept different to each table)
